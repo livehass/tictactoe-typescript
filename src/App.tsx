@@ -20,11 +20,19 @@ const Square: FC<SquareProps> = ({ value , onSquareClick}) => {
 
 const Board: FC = () => {
   const [squares, setSquares] = useState<Array<string | null>>(Array(9).fill(null));
-  
+  const [xIsNext, setXIsNext] = useState(true);
   const handleClick = (i: number): void => {
     const nextSquares = squares.slice();
     nextSquares[i] = 'X';
     setSquares(nextSquares);
+
+    if(xIsNext) {
+      nextSquares[i] = 'x'
+    }else {
+      nextSquares[i] = 'O'
+    }
+    setSquares(nextSquares)
+    setXIsNext(!xIsNext)
   }
   return (
     <>
