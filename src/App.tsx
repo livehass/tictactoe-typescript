@@ -8,7 +8,11 @@ interface SquareProps {
 }
 
 const Square: FC<SquareProps> = ({ value , onSquareClick}) => {
-  return <button className="square" onClick={onSquareClick}>{value}</button>;
+  return (
+    <button className="square" onClick={onSquareClick}>
+    {value}
+    </button>
+  );  
 }
 
 const Board: FC = () => {
@@ -22,24 +26,27 @@ const Board: FC = () => {
 
     const nextSquares = squares.slice();
     if(nextSquares[i]) {
-      console.log("o quadrado jpá está preenchido com o" + nextSquares[i]);
+      console.log("o quadrado já está preenchido com o" + nextSquares[i]);
       return;
     }
     nextSquares[i] = xIsNext ? 'X' : 'O';
     setSquares(nextSquares);
     setXIsNext(!xIsNext);
   
-    const winner = calculateWinner(squares);
-    let status;
+    
+  }
+  const winner = calculateWinner(squares);
+    let status: string;
     if(winner) {
       status = "Winner:" + winner;
+      console.log(status)
     }else {
-      status = "Next player:" + (nextSquares[i]);
+      status = "Next player:"  + (xIsNext ? 'X' : 'O');
+      console.log(status)
     }
-  }
-  
   return (
     <>
+      <div className="status">{status}</div>
       <div className="board-row">
         <Square value={squares[0]} onSquareClick={() => handleClick(0)} />
         <Square value={squares[1]} onSquareClick={() => handleClick(1)} />
@@ -77,4 +84,5 @@ function calculateWinner(squares: any[]): string | null {
   }
   return null;
 }
+
 export default Board;
