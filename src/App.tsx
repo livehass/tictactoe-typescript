@@ -1,5 +1,4 @@
 import './App.css';
-import './Reset.css'
 import React, { FC, useState } from 'react';
 
 interface SquareProps {
@@ -70,17 +69,33 @@ const Game: FC = () =>{
   const [history, setHistory] = useState<string[][]>([Array(9).fill(null)]);
   const currentSquares = history[history.length - 1];
    
-    function handlePlay(nextSquares: string[]){
+    function handlePlay(nextSquares: any[]): void{
       setHistory([...history, nextSquares]);
       setXIsNext(!xIsNext);
     }
+    function jumpTo(nextMove: number): void {
+      //todo
+    }
+    const moves: JSX.Element[] = history.map((squares: any[], move: number) => {
+      let description: string;
+      if (move > 0) {
+        description = 'Go to move #' + move;
+      }else {
+        description = 'Go to start';
+      }
+      return (
+      <li key={move}>
+        <button onClick={() => jumpTo(move)}>{description}</button>
+      </li>
+      )
+    });
     return (
       <div className="game">
         <div className="game-board">
           <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
         </div>
         <div className="game-info">
-          <ol>{/*TODO*/}</ol>
+          <ol>{moves}</ol>
         </div>
       </div>
     );    
@@ -107,3 +122,5 @@ function calculateWinner(squares: any[]): string | null {
 
 
 export default Game;
+
+
