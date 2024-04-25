@@ -1,12 +1,5 @@
-import logo from './logo.svg';
-import { StrictMode } from 'react';
-import { createRoot } from 'react-dom/client';
 import './App.css';
 import './Reset.css'
-import { title } from 'process';
-import App from './App';
-
-
 import React, { FC, useState } from 'react';
 
 interface SquareProps {
@@ -21,19 +14,30 @@ const Square: FC<SquareProps> = ({ value , onSquareClick}) => {
 const Board: FC = () => {
   const [squares, setSquares] = useState<Array<string | null>>(Array(9).fill(null));
   const [xIsNext, setXIsNext] = useState(true);
+ 
   const handleClick = (i: number): void => {
-    const nextSquares = squares.slice();
-    nextSquares[i] = 'X';
-    setSquares(nextSquares);
-
-    if(xIsNext) {
-      nextSquares[i] = 'x'
-    }else {
-      nextSquares[i] = 'O'
+    if(squares[i] || calculateWinner(squares)) {
+      return;
     }
-    setSquares(nextSquares)
-    setXIsNext(!xIsNext)
+
+    const nextSquares = squares.slice();
+    if(nextSquares[i]) {
+      console.log("o quadrado jpá está preenchido com o" + nextSquares[i]);
+      return;
+    }
+    nextSquares[i] = xIsNext ? 'X' : 'O';
+    setSquares(nextSquares);
+    setXIsNext(!xIsNext);
+  
+    const winner = calculateWinner(squares);
+    let status;
+    if(winner) {
+      status = "Winner:" + winner;
+    }else {
+      status = "Next player:" + (nextSquares[i]);
+    }
   }
+  
   return (
     <>
       <div className="board-row">
@@ -54,5 +58,23 @@ const Board: FC = () => {
     </>
   );
 }
-
+function calculateWinner(squares: any[]): string | null {
+  const lines: number[][] = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6]
+  ];
+  for (let i: number = 0; i < lines.length; i++) {
+    const [a, b, c]: number[] = lines[i];
+    if(squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+      return squares[a];
+    }
+  }
+  return null;
+}
 export default Board;
