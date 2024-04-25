@@ -106,4 +106,4 @@ function calculateWinner(squares: any[]): string | null {
 }
 
 
-export default Board;
+export default Game;
