@@ -67,6 +67,7 @@ const Board: FC<BoardProps> = ({xIsNext, squares, onPlay}) => {
 const Game: FC = () =>{
   const [xIsNext, setXIsNext] = useState<boolean>(true);
   const [history, setHistory] = useState<string[][]>([Array(9).fill(null)]);
+  const [currentMove, setCurrentMove] = useState<number>(0);
   const currentSquares = history[history.length - 1];
    
     function handlePlay(nextSquares: any[]): void{
@@ -74,7 +75,8 @@ const Game: FC = () =>{
       setXIsNext(!xIsNext);
     }
     function jumpTo(nextMove: number): void {
-      //todo
+      setCurrentMove(nextMove);
+      setXIsNext(nextMove % 2 === 0)
     }
     const moves: JSX.Element[] = history.map((squares: any[], move: number) => {
       let description: string;
