@@ -20,20 +20,19 @@ const Board: FC = () => {
   const [xIsNext, setXIsNext] = useState(true);
  
   const handleClick = (i: number): void => {
-    if(squares[i] || calculateWinner(squares)) {
+    if(calculateWinner(squares) || squares[i]) {
       return;
     }
 
     const nextSquares = squares.slice();
     if(nextSquares[i]) {
-      console.log("o quadrado já está preenchido com o" + nextSquares[i]);
+      console.log("The square it's already fill" + nextSquares[i]);
       return;
     }
     nextSquares[i] = xIsNext ? 'X' : 'O';
     setSquares(nextSquares);
     setXIsNext(!xIsNext);
   
-    
   }
   const winner = calculateWinner(squares);
     let status: string;
